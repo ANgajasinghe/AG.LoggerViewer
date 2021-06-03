@@ -22,13 +22,13 @@
 
 
 
-	<PropertyGroup>
+	<!--<PropertyGroup>
 		<DefaultItemExcludes>$(DefaultItemExcludes);wwwroot\styles.css</DefaultItemExcludes>
 	</PropertyGroup>
 	
 	<ItemGroup>
 		<EmbeddedResource Include="wwwroot\**\*" />
 		<Content Update="**\*.cshtml" Pack="false" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>

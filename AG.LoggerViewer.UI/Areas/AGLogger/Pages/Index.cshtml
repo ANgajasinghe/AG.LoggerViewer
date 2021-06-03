@@ -1,20 +1,32 @@
 ﻿@page
 @model AG.LoggerViewer.UI.Areas.AGLogger.Pages.IndexModel
-@{
-    Layout = null;
-}
+
+<form method="post">
+    <div class="container mt-5" id="signin">
+        <div class="container form-container">
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AG.LoggerViewer</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="_content/AG.LoggerViewer.UI/styles.css" />
-</head>
-    <body>
-    <h1 class="text-color">iohoihdfi oidfoiidhfoi dfhoihdf ohdfouho </h1>
-    </body>
-</html>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control form-control-lg" id="exampleFormControlInput1"
+                     
+                       required
+                       placeholder="name@example.com">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput2" class="form-label">Password</label>
+                <input type="password" class="form-control form-control-lg" id="exampleFormControlInput2"
+    
+                       
+                       required
+                       placeholder="Password">
+            </div>
+
+            <a href="Identity365/PasswordResetEmail" class="link">Forgot Password?</a>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">Sign in</button>
+        </div>
+    </div>
+</form>
+
