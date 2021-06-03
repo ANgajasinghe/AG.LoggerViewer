@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+	  <TargetFramework>netcoreapp3.1</TargetFramework>
+	 <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	  <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.15" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\AG.LoggerViewer.Application\AG.LoggerViewer.Application.csproj" />
+  </ItemGroup>
+
+
+
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);wwwroot\styles.css</DefaultItemExcludes>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Include="wwwroot\**\*" />
+		<Content Update="**\*.cshtml" Pack="false" />
+	</ItemGroup>
+
+</Project>
