@@ -12,3 +12,8 @@
 .text-color {
     color:red;
 }
+
+.scroller-view{
+    height: 45vh;
+    overflow-y: auto;
+}

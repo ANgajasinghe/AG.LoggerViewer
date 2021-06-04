@@ -1,9 +1,75 @@
 ﻿@page
 @model AG.LoggerViewer.UI.Areas.AGLogger.Pages.IndexModel
+@inject LoggerUtitlity LoggerUtility
 
-kjsdhjiodfu oidfuoidfuoidfiu 
 
-<h1>@Model.Message</h1>
+<div class="row mt-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <b> Logger Path : </b> @LoggerUtility.LoggerPath<span>/*</span>@LoggerUtility.FileExtension
+                    </div>
 
-<code style="white-space: pre-wrap"> @Model.loggerFileData </code>
+                    <div>
+                        <b> FIle Count : </b> @Model.FileCountFromLoggerPath
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+
+<div class="row mt-4">
+    <div class="col-sm-4">
+        
+        <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="d-flex">
+                            <label class="form-label" for="fromDate" style="width: 120px">From Date</label>
+                            <input
+                                type="date"
+                                style="width: 100%"
+                                class="form-control"
+                                id="fromDate"/>
+                        </div>
+        
+                        <div class="d-flex mt-1">
+                            <label class="form-label" for="toDate" style="width: 120px">To Date</label>
+                                <input
+                                    type="date"
+                                    style="width: 100%"
+                                    class="form-control"
+                                    id="toDate"/>
+                        </div>
+        
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+        
+        <div class="card mt-2 scroller-view">
+            <div class="card-body">
+                
+                <ul class="list-group">
+                    @foreach (var fileData in Model.KeyValueDtos)
+                    {
+                        <li class="list-group-item" aria-current="true">@fileData.Key</li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <h1>@Model.Message</h1> *@
+@* *@
+@* <code style="white-space: pre-wrap"> @Model.LoggerFileData </code> *@
