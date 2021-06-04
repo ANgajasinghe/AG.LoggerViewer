@@ -1,4 +1,5 @@
 ﻿using AG.LoggerViewer.Application.Commin;
+using AG.LoggerViewer.Application.Services;
 using AG.LoggerViewer.Application.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ namespace AG.LoggerViewer.UI
             if (loggerUtility == null) throw new AGLoggerExceptions("Cannot read logger utility, Please add {LoggerUtitlity} section");
 
             services.AddSingleton(loggerUtility);
+            services.AddSingleton<DateTimeService>();
+            services.AddScoped<ILoggerReadService,LoggerReadService>();
 
 
 
