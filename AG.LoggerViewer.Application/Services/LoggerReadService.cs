@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AG.LoggerViewer.Application.Common.Models;
 
 namespace AG.LoggerViewer.Application.Services
 {
@@ -35,14 +36,25 @@ namespace AG.LoggerViewer.Application.Services
             }
         }
 
-        public string GetJsonStringFromObject(List<object> fileData)
+        public string GetJsonStringFromLoggerObject(List<JsonLoggerModel> fileData)
         {
 
-            var options = new JsonSerializerOptions()
+            var options = new JsonSerializerOptions
             {
                 WriteIndented = true
             };
             return JsonSerializer.Serialize(fileData, options);
+        }
+
+        public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData)
+        {
+            return new LoggerStatsModel
+            {
+                NumberOfLines = fileData.Count,
+                ErrorCount = fileData.Where(x => x.Level == "Error").ToList().Count,
+                InformationCount = fileData.Where(x => x.Level == "Information").ToList().Count,
+                WarningCount = fileData.Where(x => x.Level == "Warning").ToList().Count,
+            };
         }
 
         public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10)
@@ -51,11 +63,21 @@ namespace AG.LoggerViewer.Application.Services
             {
                 List<KeyValueDto> keyValueDtos = new List<KeyValueDto>();
 
-                var topReccods = GetFilesFromLoggerPath().Take(limit).ToArray();
-
-                for (int i = topReccods.Length - 1; i >= 0; i--)
+                var records = new List<string>();
+                if (limit == -1)
                 {
-                    var path = topReccods[i];
+                    records =  GetFilesFromLoggerPath().ToList();
+                }
+                else
+                {
+                    records =  GetFilesFromLoggerPath().Take(limit).ToList();
+                }
+
+
+
+                for (int i = records.Count - 1; i >= 0; i--)
+                {
+                    var path = records[i];
 
                     var fileName = Path.GetFileName(path);
 
@@ -71,12 +93,12 @@ namespace AG.LoggerViewer.Application.Services
             }
         }
 
-        public List<object> ReadLogFile(string filePath)
+        public List<JsonLoggerModel> ReadLogFile(string filePath)
         {
             try
             {
 
-                List<object> list = new List<object>();
+                List<JsonLoggerModel> list = new List<JsonLoggerModel>();
 
                 if (!File.Exists(filePath)) throw new AGLoggerExceptions($"{Path.GetFileName(filePath)} this file could'n find from {filePath}");
 
@@ -89,7 +111,7 @@ namespace AG.LoggerViewer.Application.Services
 
                     while ((ln = file.ReadLine()) != null)
                     {
-                        list.Add(JsonSerializer.Deserialize<object>(ln));
+                        list.Add(JsonSerializer.Deserialize<JsonLoggerModel>(ln));
                         counter++;
                     }
 
@@ -107,7 +129,7 @@ namespace AG.LoggerViewer.Application.Services
             }
         }
 
-        public List<object> ReadLoggerFileFromDate(DateTime dateTime)
+        public List<JsonLoggerModel> ReadLoggerFileFromDate(DateTime dateTime)
         {
             var filePath = Path.Combine(_loggerUtility.LoggerPath, $"{_loggerUtility.LoggerFileNameWithOutDate}{_dateTimeService.FormatDate(dateTime)}{_loggerUtility.FileExtension}");
 
@@ -122,10 +144,13 @@ namespace AG.LoggerViewer.Application.Services
 
         public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10);
 
-        public List<object> ReadLogFile(string filePath);
+        public List<JsonLoggerModel> ReadLogFile(string filePath);
 
-        public List<object> ReadLoggerFileFromDate(DateTime dateTime);
+        public List<JsonLoggerModel> ReadLoggerFileFromDate(DateTime dateTime);
 
-        public string GetJsonStringFromObject(List<Object> fileData);
+        public string GetJsonStringFromLoggerObject(List<JsonLoggerModel> fileData);
+        public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData);
+        
+        
     }
 }

@@ -1,0 +1,58 @@
+﻿@using AG.LoggerViewer.Application.Common.Models
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card bg-primary shadow-0 border">
+            <div class="card-body text-center">
+
+                <div class="d-flex align-items-center" style="height: 100px">
+                    <div class="text-danger stats-icon">
+                        <i class="fs-4 fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <div class="fs-3">
+                            <b> @StatsModel.ErrorCount </b>
+                        </div>
+                        <b class="text-danger">Errors</b>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-4">
+        <div class="card shadow-0 border">
+            <div class="card-body text-center">
+                <div class="h3 text-warning">
+                    <b>Warnings</b>
+                </div>
+                <h3>
+                    <b> @StatsModel.WarningCount </b>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card shadow-0 border">
+            <div class="card-body text-center">
+                <div class="h3 text-warning">
+                    <b>Informations</b>
+                </div>
+                <h3>
+                    <b> @StatsModel.InformationCount </b>
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public LoggerStatsModel StatsModel { get; set; } = new LoggerStatsModel();
+
+
+}

@@ -14,6 +14,20 @@
 }
 
 .scroller-view{
-    height: 45vh;
+    height: 50vh;
     overflow-y: auto;
+}
+
+.scroller-view-logger{
+    height: 76vh;
+    overflow-y: auto;
+}
+.stats-icon{
+    padding: 12px;
+    border-radius: 100%;
+    background-color: #ffffff;
+}
+
+.bg-primary{
+    background-color: #F5F5F5 !important;
 }
