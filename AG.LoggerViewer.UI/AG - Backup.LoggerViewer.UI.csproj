@@ -12,7 +12,6 @@
 	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <NeutralLanguage>en</NeutralLanguage>
-	  <Version>1.0.1</Version>
   </PropertyGroup>
 
 
@@ -23,6 +22,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.15" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\AG.LoggerViewer.Application\AG.LoggerViewer.Application.csproj" />
   </ItemGroup>
 
 
