@@ -23,8 +23,7 @@
     overflow-y: auto;
 }
 .stats-icon{
-    padding: 12px;
-    border-radius: 100%;
+    border-radius: 10%;
     background-color: #ffffff;
 }
 

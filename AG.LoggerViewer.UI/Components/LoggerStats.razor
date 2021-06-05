@@ -3,46 +3,72 @@
 
 <div class="row">
     <div class="col-sm-4">
-        <div class="card bg-primary shadow-0 border">
-            <div class="card-body text-center">
+        <div class="card shadow-0 border">
+            <div class="card-body p-0 text-center">
 
-                <div class="d-flex align-items-center" style="height: 100px">
-                    <div class="text-danger stats-icon">
-                        <i class="fs-4 fas fa-exclamation-triangle"></i>
+                <div class="row align-items-center" style="height: 80px">
+
+                    <div class="col-5 text-center">
+                        <div class="text-danger">
+                            <i class="fs-4 p-3 stats-icon  fas fa-exclamation-triangle" style="background-color: #FFEBEE;"></i>
+                        </div>
                     </div>
-                    <div>
+
+                    <div class="col">
                         <div class="fs-3">
                             <b> @StatsModel.ErrorCount </b>
                         </div>
                         <b class="text-danger">Errors</b>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
 
     </div>
     <div class="col-sm-4">
         <div class="card shadow-0 border">
-            <div class="card-body text-center">
-                <div class="h3 text-warning">
-                    <b>Warnings</b>
+            <div class="card-body p-0 text-center">
+
+                <div class="row align-items-center" style="height: 80px">
+
+                    <div class="col-5 text-center">
+                        <div class="text-warning">
+                            <i class="fs-4 p-3 stats-icon  fas fa-exclamation-circle" style="background-color: #FFFDE7;"></i>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="fs-3">
+                            <b> @StatsModel.WarningCount </b>
+                        </div>
+                        <b class="text-warning">Warnings</b>
+                    </div>
+
                 </div>
-                <h3>
-                    <b> @StatsModel.WarningCount </b>
-                </h3>
             </div>
         </div>
     </div>
     <div class="col-sm-4">
         <div class="card shadow-0 border">
-            <div class="card-body text-center">
-                <div class="h3 text-warning">
-                    <b>Informations</b>
+            <div class="card-body p-0 text-center">
+
+                <div class="row align-items-center" style="height: 80px">
+
+                    <div class="col-5 text-center">
+                        <div class="text-info">
+                            <i class="fs-4 p-3 stats-icon  fas fa-bookmark" style="background-color: #E1F5FE;"></i>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="fs-3">
+                            <b> @StatsModel.WarningCount </b>
+                        </div>
+                        <b class="text-info">Informations</b>
+                    </div>
+
                 </div>
-                <h3>
-                    <b> @StatsModel.InformationCount </b>
-                </h3>
             </div>
         </div>
     </div>
