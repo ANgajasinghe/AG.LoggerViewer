@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AG.LoggerViewer", "AG.LoggerViewer\AG.LoggerViewer.csproj", "{EFE6EC55-9B6C-451C-8474-FE9A3C8088EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AG.LoggerViewer.Application", "AG.LoggerViewer.Application\AG.LoggerViewer.Application.csproj", "{E8E79B62-08C5-40C7-841F-3C8C3C049561}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AG.LoggerViewer.UI", "AG.LoggerViewer.UI\AG.LoggerViewer.UI.csproj", "{CB616AFC-98D4-435C-BC88-256D29B550C4}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{EFE6EC55-9B6C-451C-8474-FE9A3C8088EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFE6EC55-9B6C-451C-8474-FE9A3C8088EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFE6EC55-9B6C-451C-8474-FE9A3C8088EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8E79B62-08C5-40C7-841F-3C8C3C049561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8E79B62-08C5-40C7-841F-3C8C3C049561}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8E79B62-08C5-40C7-841F-3C8C3C049561}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8E79B62-08C5-40C7-841F-3C8C3C049561}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB616AFC-98D4-435C-BC88-256D29B550C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB616AFC-98D4-435C-BC88-256D29B550C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB616AFC-98D4-435C-BC88-256D29B550C4}.Release|Any CPU.ActiveCfg = Release|Any CPU

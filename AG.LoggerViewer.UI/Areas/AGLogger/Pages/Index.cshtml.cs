@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AG.LoggerViewer.Application.Commin.Dto;
-using AG.LoggerViewer.Application.Common.Models;
-using AG.LoggerViewer.Application.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
+using AG.LoggerViewer.UI.Application.Common.Dto;
+using AG.LoggerViewer.UI.Application.Common.Models;
+using AG.LoggerViewer.UI.Application.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
 {
@@ -22,31 +16,28 @@ namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
             ILoggerReadService loggerReadService)
         {
             _dateTimeService = dateTimeService;
-           _loggerReadService = loggerReadService;
+            _loggerReadService = loggerReadService;
         }
 
 
         public string Message { get; set; }
 
         public int FileCountFromLoggerPath { get; set; }
-        
+
         public string SelectedFileName { get; set; }
 
         public List<KeyValueDto> KeyValueDtos { get; set; } = new List<KeyValueDto>();
 
         public LoggerStatsModel LoggerStats { get; set; }
-        
-        public List<JsonLoggerModel> JsonLoggerModels  { get; set; }
+
+        public List<JsonLoggerModel> JsonLoggerModels { get; set; }
 
         // public string loggerFileData
 
         public void OnGet(string file)
         {
-            if (string.IsNullOrWhiteSpace(file))
-            {
-                file = _loggerReadService.GetTodayFileName();
-            }
-            
+            if (string.IsNullOrWhiteSpace(file)) file = _loggerReadService.GetTodayFileName();
+
             JsonLoggerModels = _loggerReadService.ReadLoggerFileFromFileName(file);
             SelectedFileName = file;
 
@@ -54,8 +45,6 @@ namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
             FileCountFromLoggerPath = _loggerReadService.GetFilesFromLoggerPath().Length;
 
             KeyValueDtos = _loggerReadService.GetTopMostFileNamesAndPath(-1);
-
-
         }
     }
 }

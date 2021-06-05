@@ -174,7 +174,7 @@ class Dropdown extends BSDropdown {
 
       if (shownEvent.defaultPrevented) {
         e.preventDefault();
-        return;
+        
       }
     });
   }

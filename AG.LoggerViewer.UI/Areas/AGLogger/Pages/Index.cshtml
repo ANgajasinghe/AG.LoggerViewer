@@ -1,4 +1,5 @@
 ﻿@page
+@using LoggerUtitlity = AG.LoggerViewer.UI.Application.Util.LoggerUtility
 @model AG.LoggerViewer.UI.Areas.AGLogger.Pages.IndexModel
 @inject LoggerUtitlity LoggerUtility
 
@@ -61,7 +62,7 @@
                     @foreach (var fileData in Model.KeyValueDtos)
                     {
                         <a href="./AGLogger?file=@fileData.Key">
-                            
+
                             @if (Model.SelectedFileName != null && Model.SelectedFileName == fileData.Key)
                             {
                                 <li class="list-group-item active" aria-current="true">@fileData.Key</li>
@@ -82,8 +83,10 @@
         <div class="card scroller-view-logger">
             <div class="card-body ">
                 @* <div style="white-space: pre-wrap"> @Model.LoggerFileData </div> *@
-                <p> <i>Logger File Name : @Model.SelectedFileName </i></p>
-                <component type="typeof(LoggerStats)" render-mode="Static" param-statsModel='@Model.LoggerStats'/>
+                <p>
+                    <i>Logger File Name : @Model.SelectedFileName </i>
+                </p>
+                <component type="typeof(LoggerStats)" render-mode="Static" param-statsModel="@Model.LoggerStats"/>
                 <hr>
                 <div class="border border-dark p-2 w-100 h-100 ">
                     @foreach (var loggerItem in Model.JsonLoggerModels)
