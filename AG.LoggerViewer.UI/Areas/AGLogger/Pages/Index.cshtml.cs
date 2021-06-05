@@ -17,7 +17,9 @@ namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
         private readonly DateTimeService _dateTimeService;
         private readonly ILoggerReadService _loggerReadService;
 
-        public IndexModel(DateTimeService dateTimeService, ILoggerReadService loggerReadService)
+        public IndexModel(
+            DateTimeService dateTimeService,
+            ILoggerReadService loggerReadService)
         {
             _dateTimeService = dateTimeService;
            _loggerReadService = loggerReadService;
@@ -28,27 +30,31 @@ namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
 
         public int FileCountFromLoggerPath { get; set; }
         
-        public string LoggerFileData { get; set; }
+        public string SelectedFileName { get; set; }
 
         public List<KeyValueDto> KeyValueDtos { get; set; } = new List<KeyValueDto>();
 
         public LoggerStatsModel LoggerStats { get; set; }
+        
+        public List<JsonLoggerModel> JsonLoggerModels  { get; set; }
 
         // public string loggerFileData
 
-        public void OnGet()
+        public void OnGet(string file)
         {
-            Message = _dateTimeService.GetDateTime;
-            var data =  _loggerReadService.ReadLoggerFileFromDate(DateTime.Now);
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                file = _loggerReadService.GetTodayFileName();
+            }
             
-            LoggerStats = _loggerReadService.GetDailyLoggerStats(data);
-            
-            
+            JsonLoggerModels = _loggerReadService.ReadLoggerFileFromFileName(file);
+            SelectedFileName = file;
+
+            LoggerStats = _loggerReadService.GetDailyLoggerStats(JsonLoggerModels);
             FileCountFromLoggerPath = _loggerReadService.GetFilesFromLoggerPath().Length;
-            LoggerFileData = _loggerReadService.GetJsonStringFromLoggerObject(data);
+
             KeyValueDtos = _loggerReadService.GetTopMostFileNamesAndPath(-1);
-            // ILogger dd = new Logger<IndexModel>();
-            // dd.Log(LogLevel.Critical);
+
 
         }
     }

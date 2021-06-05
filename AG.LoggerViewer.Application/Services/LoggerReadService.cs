@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using AG.LoggerViewer.Application.Common.Models;
 
 namespace AG.LoggerViewer.Application.Services
@@ -27,7 +25,7 @@ namespace AG.LoggerViewer.Application.Services
         {
             try
             {
-                return Directory.GetFiles(_loggerUtility.LoggerPath, $"*{_loggerUtility.FileExtension}") ?? new string[] { };
+                return Directory.GetFiles(_loggerUtility.LoggerPath, $"*{_loggerUtility.FileExtension}");
             }
             catch (Exception ex)
             {
@@ -36,7 +34,7 @@ namespace AG.LoggerViewer.Application.Services
             }
         }
 
-        public string GetJsonStringFromLoggerObject(List<JsonLoggerModel> fileData)
+        public string GetJsonStringFromLoggerObject(object fileData)
         {
 
             var options = new JsonSerializerOptions
@@ -61,9 +59,9 @@ namespace AG.LoggerViewer.Application.Services
         {
             try
             {
-                List<KeyValueDto> keyValueDtos = new List<KeyValueDto>();
+                var keyValueDtos = new List<KeyValueDto>();
 
-                var records = new List<string>();
+                List<string> records;
                 if (limit == -1)
                 {
                     records =  GetFilesFromLoggerPath().ToList();
@@ -72,10 +70,8 @@ namespace AG.LoggerViewer.Application.Services
                 {
                     records =  GetFilesFromLoggerPath().Take(limit).ToList();
                 }
-
-
-
-                for (int i = records.Count - 1; i >= 0; i--)
+                
+                for (var i = records.Count - 1; i >= 0; i--)
                 {
                     var path = records[i];
 
@@ -92,27 +88,39 @@ namespace AG.LoggerViewer.Application.Services
                 throw new AGLoggerExceptions("Cannot get top files, please check your logger path", ex);
             }
         }
+        
+        public List<JsonLoggerModel> ReadLoggerFileFromFileName(string fileName)
+        {
+            var filePath = Path.Combine(_loggerUtility.LoggerPath,fileName);
 
-        public List<JsonLoggerModel> ReadLogFile(string filePath)
+            return ReadLogFile(filePath);
+        }
+
+        public string GetTodayFileName()
+        {
+            return
+                $"{_loggerUtility.LoggerFileNameWithOutDate}{_dateTimeService.GetDateTime}{_loggerUtility.FileExtension}";
+        }
+        
+        
+        private static List<JsonLoggerModel> ReadLogFile(string filePath)
         {
             try
             {
 
-                List<JsonLoggerModel> list = new List<JsonLoggerModel>();
+                var list = new List<JsonLoggerModel>();
 
                 if (!File.Exists(filePath)) throw new AGLoggerExceptions($"{Path.GetFileName(filePath)} this file could'n find from {filePath}");
 
-                Stream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                 using (StreamReader file = new StreamReader(stream))
                 {
-                    int counter = 0;
                     string ln;
 
                     while ((ln = file.ReadLine()) != null)
                     {
                         list.Add(JsonSerializer.Deserialize<JsonLoggerModel>(ln));
-                        counter++;
                     }
 
                     file.Close();
@@ -120,7 +128,7 @@ namespace AG.LoggerViewer.Application.Services
 
                 stream.Close();
 
-                return list;
+                return list.OrderByDescending(x=>x.Timestamp).ToList();
             }
             catch (Exception ex)
             {
@@ -128,13 +136,8 @@ namespace AG.LoggerViewer.Application.Services
                 throw new AGLoggerExceptions("Cannot get read log file", ex);
             }
         }
-
-        public List<JsonLoggerModel> ReadLoggerFileFromDate(DateTime dateTime)
-        {
-            var filePath = Path.Combine(_loggerUtility.LoggerPath, $"{_loggerUtility.LoggerFileNameWithOutDate}{_dateTimeService.FormatDate(dateTime)}{_loggerUtility.FileExtension}");
-
-            return ReadLogFile(filePath);
-        }
+        
+        
     }
 
     public interface ILoggerReadService 
@@ -143,14 +146,14 @@ namespace AG.LoggerViewer.Application.Services
         public string[] GetFilesFromLoggerPath();
 
         public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10);
+        
 
-        public List<JsonLoggerModel> ReadLogFile(string filePath);
-
-        public List<JsonLoggerModel> ReadLoggerFileFromDate(DateTime dateTime);
-
-        public string GetJsonStringFromLoggerObject(List<JsonLoggerModel> fileData);
+        public string GetJsonStringFromLoggerObject(object fileData);
         public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData);
-        
-        
+
+        List<JsonLoggerModel> ReadLoggerFileFromFileName(string fileName);
+
+        string GetTodayFileName();
+
     }
 }

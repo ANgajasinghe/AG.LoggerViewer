@@ -60,19 +60,38 @@
                 <ul class="list-group">
                     @foreach (var fileData in Model.KeyValueDtos)
                     {
-                        <li class="list-group-item" aria-current="true">@fileData.Key</li>
-                    }   
+                        <a href="./AGLogger?file=@fileData.Key">
+                            
+                            @if (Model.SelectedFileName != null && Model.SelectedFileName == fileData.Key)
+                            {
+                                <li class="list-group-item active" aria-current="true">@fileData.Key</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item" aria-current="true">@fileData.Key</li>
+                            }
+                        </a>
+                    }
 
-                </ul>    
+                </ul>
             </div>
         </div>
     </div>
-         
+
     <div class="col-sm-8">
         <div class="card scroller-view-logger">
-            <div class="card-body">
+            <div class="card-body ">
                 @* <div style="white-space: pre-wrap"> @Model.LoggerFileData </div> *@
-                <component type="typeof(LoggerStats)" render-mode="Static" param-statsModel='@Model.LoggerStats' />
+                <p> <i>Logger File Name : @Model.SelectedFileName </i></p>
+                <component type="typeof(LoggerStats)" render-mode="Static" param-statsModel='@Model.LoggerStats'/>
+                <hr>
+                <div class="border border-dark p-2 w-100 h-100 ">
+                    @foreach (var loggerItem in Model.JsonLoggerModels)
+                    {
+                        <component type="typeof(LoggerDataComponent)" render-mode="Static" param-jsonLoggerModel='@loggerItem'/>
+                    }
+                </div>
+                <hr>
             </div>
         </div>
 

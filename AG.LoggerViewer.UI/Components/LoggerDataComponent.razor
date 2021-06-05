@@ -1,0 +1,47 @@
+﻿@using AG.LoggerViewer.Application.Commin
+@using AG.LoggerViewer.Application.Common.Models
+@using AG.LoggerViewer.Application.Services
+@inject ILoggerReadService LoggerReadService;
+
+<div class="p-2" style="background-color: @GetBackGroundColor(JsonLoggerModel.Level)">
+    <small>
+        @JsonLoggerModel.Timestamp
+        <br>
+        Level:- @JsonLoggerModel.Level
+        <br>
+        Properties :- <span style="white-space: pre-wrap"> @LoggerReadService.GetJsonStringFromLoggerObject(JsonLoggerModel.Properties) </span>
+        <br>
+        <br>
+        @if (!string.IsNullOrWhiteSpace(JsonLoggerModel.Exception))
+        {
+            <p>
+                <b>Exception :- <span style="white-space: pre-wrap">@JsonLoggerModel.Exception</span></b>
+            </p>
+        }
+
+
+
+
+    </small>
+</div>
+
+<hr>
+
+
+@code {
+
+    [Parameter]
+    public JsonLoggerModel JsonLoggerModel { get; set; }
+
+    public string GetBackGroundColor(string errorType)
+    {
+        return errorType switch
+        {
+            AgLoggerConst.Error => "#FFEBEE",
+            AgLoggerConst.Warning => "#FFFDE7",
+            AgLoggerConst.Information => "#E1F5FE",
+            _ => ""
+            };
+    }
+
+}
