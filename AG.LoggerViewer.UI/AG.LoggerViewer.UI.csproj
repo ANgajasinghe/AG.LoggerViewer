@@ -4,6 +4,14 @@
 	  <TargetFramework>netcoreapp3.1</TargetFramework>
 	 <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	  <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Description>Logger ui serilog json template</Description>
+	  <Copyright />
+	  <PackageProjectUrl>https://github.com/ANgajasinghe/AG.LoggerViewer</PackageProjectUrl>
+	  <EnableNETAnalyzers>true</EnableNETAnalyzers>
+	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
 
