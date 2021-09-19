@@ -11,14 +11,14 @@
         Level:- @JsonLoggerModel.Level
         <br>
         Properties :-
-        <span style="white-space: pre-line">
+        <span style="white-space: pre-wrap">
             @JsonLoggerModel.Properties.ToJson()
         </span>
         @if (!string.IsNullOrWhiteSpace(JsonLoggerModel.Exception))
         {
             <div>
                 Exception :-
-                <span style="white-space: pre-line">
+                <span style="white-space: pre-wrap">
                     @JsonLoggerModel.Exception.ToJson()
                 </span>
             </div>
