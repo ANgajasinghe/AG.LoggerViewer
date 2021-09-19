@@ -3,13 +3,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using AG.LoggerViewer.UI.Application.Common;
 using AG.LoggerViewer.UI.Application.Common.Dto;
+using AG.LoggerViewer.UI.Application.Common.Extensions;
 using AG.LoggerViewer.UI.Application.Common.Models;
 using AG.LoggerViewer.UI.Application.Util;
 
 namespace AG.LoggerViewer.UI.Application.Services
 {
+
+    public interface ILoggerReadService
+    {
+        public string[] GetFilesFromLoggerPath();
+
+        public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10);
+
+
+        public string GetJsonStringFromLoggerObject(object fileData);
+        public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData);
+
+        List<JsonLoggerModel> ReadLoggerFileFromFileName(string fileName);
+
+        string GetTodayFileName();
+    }
+
+
     public class LoggerReadService : ILoggerReadService
     {
         private readonly DateTimeService _dateTimeService;
@@ -36,11 +55,9 @@ namespace AG.LoggerViewer.UI.Application.Services
 
         public string GetJsonStringFromLoggerObject(object fileData)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            return JsonSerializer.Serialize(fileData, options);
+            var data = fileData.ToJson();
+            return data;
+            // return data;
         }
 
         public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData)
@@ -64,7 +81,9 @@ namespace AG.LoggerViewer.UI.Application.Services
                 if (limit == -1)
                     records = GetFilesFromLoggerPath().ToList();
                 else
-                    records = GetFilesFromLoggerPath().Take(limit).ToList();
+                    records = GetFilesFromLoggerPath().Take(limit)
+                        .OrderBy(x=>x)
+                        .ToList();
 
                 for (var i = records.Count - 1; i >= 0; i--)
                 {
@@ -111,9 +130,16 @@ namespace AG.LoggerViewer.UI.Application.Services
 
                 using (var file = new StreamReader(stream))
                 {
+                   // var x = @"{"Timestamp":"2021-09-19T03:07:05.1993971+05:30","Level":"Information","MessageTemplate":"{State:l}","Properties":{"State":"Using the following options for Hangfire Server:\r\n    Worker count: 20\r\n    Listening queues: 'default'\r\n    Shutdown timeout: 00:00:15\r\n    Schedule polling interval: 00:00:15","SourceContext":"Hangfire.BackgroundJobServer","Application":"Cube360 WMS"},"Renderings":{"State":[{"Format":"l","Rendering":"Using the following options for Hangfire Server:\r\n    Worker count: 20\r\n    Listening queues: 'default'\r\n    Shutdown timeout: 00:00:15\r\n    Schedule polling interval: 00:00:15"}]}}"
                     string ln;
+                    while ((ln = file.ReadLine()) != null)
+                    {
+                        var replacedData = Regex.Replace(ln , @"\\r\\n" ,",  ");
+                        list.Add(replacedData.FromJson<JsonLoggerModel>());
+                    }
+                    
 
-                    while ((ln = file.ReadLine()) != null) list.Add(JsonSerializer.Deserialize<JsonLoggerModel>(ln));
+                   
 
                     file.Close();
                 }
@@ -129,18 +155,5 @@ namespace AG.LoggerViewer.UI.Application.Services
         }
     }
 
-    public interface ILoggerReadService
-    {
-        public string[] GetFilesFromLoggerPath();
-
-        public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10);
-
-
-        public string GetJsonStringFromLoggerObject(object fileData);
-        public LoggerStatsModel GetDailyLoggerStats(List<JsonLoggerModel> fileData);
-
-        List<JsonLoggerModel> ReadLoggerFileFromFileName(string fileName);
-
-        string GetTodayFileName();
-    }
+   
 }

@@ -1,105 +1,159 @@
 ﻿@page
-@using LoggerUtitlity = AG.LoggerViewer.UI.Application.Util.LoggerUtility
+@using LoggerUtility = AG.LoggerViewer.UI.Application.Util.LoggerUtility
+@using AG.LoggerViewer.UI.Application.Common
 @model AG.LoggerViewer.UI.Areas.AGLogger.Pages.IndexModel
-@inject LoggerUtitlity LoggerUtility
+@inject LoggerUtility _loggerUtility
 
+<nav class="shadow-0 bg-light p-3">
 
-<div class="row mt-4">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <b> Logger Path : </b> @LoggerUtility.LoggerPath<span>/*</span>@LoggerUtility.FileExtension
-                    </div>
-
-                    <div>
-                        <b> FIle Count : </b> @Model.FileCountFromLoggerPath
-                    </div>
-                </div>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+            <div>
+                <b> Logger Path : </b> @_loggerUtility.LoggerPath<span>/*</span>@_loggerUtility.FileExtension
+            </div>
+            <div>
+            </div>
+            <div>
+                <b> FIle Count : </b> @Model.FileCountFromLoggerPath
             </div>
         </div>
     </div>
+
+</nav>
+
+
+<div id="mySidenav" class="sidenav shadow-3">
+     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+    <div class="container">
+        <div>
+            <form>
+            
+                        <div class="d-flex">
+                            <label class="form-label" for="fromDate" style="width: 120px">From Date</label>
+                            <input type="date"
+                                   style="width: 100%"
+                                   class="form-control"
+                                   id="fromDate"/>
+                        </div>
+            
+                        <div class="d-flex mt-1">
+                            <label class="form-label" for="toDate" style="width: 120px">To Date</label>
+                            <input type="date"
+                                   style="width: 100%"
+                                   class="form-control"
+                                   id="toDate"/>
+                        </div>
+            
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        </div>
+                    </form>
+        </div>
+        
+
+        <ul class="list-group mt-2 scroller-view">
+            @foreach (var fileData in Model.KeyValueDtos)
+            {
+                <a href="./AGLogger?file=@fileData.Key">
+
+                    @if (Model.SelectedFileName != null && Model.SelectedFileName == fileData.Key)
+                    {
+                        <li class="list-group-item active" aria-current="true">@fileData.Key</li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item" aria-current="true">@fileData.Key</li>
+                    }
+                </a>
+            }
+
+        </ul>
+    </div>
+    
+
+
 </div>
 
+<button onclick="openNav()" class="btn btn-outline-primary">
+    <i class="fas fa-bars"></i>
+</button>
 
-<div class="row mt-4">
-    <div class="col-sm-4">
+@* <div class="row mt-4"> *@
+@*     <div class="col-sm-12"> *@
+@*         <div class="card"> *@
+@*             <div class="card-body"> *@
+@*                 <div class="d-flex justify-content-between"> *@
+@*                     <div> *@
+@*                         <b> Logger Path : </b> @LoggerUtility.LoggerPath<span>/*</span>@LoggerUtility.FileExtension *@
+@*                     </div> *@
+@* *@
+@*                     <div> *@
+@*                         <b> FIle Count : </b> @Model.FileCountFromLoggerPath *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
 
-        <div class="card">
-            <div class="card-body">
-                <form>
-                    <div class="d-flex">
-                        <label class="form-label" for="fromDate" style="width: 120px">From Date</label>
-                        <input
-                            type="date"
-                            style="width: 100%"
-                            class="form-control"
-                            id="fromDate"/>
-                    </div>
-
-                    <div class="d-flex mt-1">
-                        <label class="form-label" for="toDate" style="width: 120px">To Date</label>
-                        <input
-                            type="date"
-                            style="width: 100%"
-                            class="form-control"
-                            id="toDate"/>
-                    </div>
-
-                    <div class="mt-2">
-                        <button type="submit" class="btn btn-primary w-100">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div class="container">
+    <div class="row mt-4">
 
 
-        <div class="card mt-2 scroller-view">
-            <div class="card-body">
-
-                <ul class="list-group">
-                    @foreach (var fileData in Model.KeyValueDtos)
-                    {
-                        <a href="./AGLogger?file=@fileData.Key">
-
-                            @if (Model.SelectedFileName != null && Model.SelectedFileName == fileData.Key)
-                            {
-                                <li class="list-group-item active" aria-current="true">@fileData.Key</li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item" aria-current="true">@fileData.Key</li>
-                            }
-                        </a>
-                    }
-
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-8">
-        <div class="card scroller-view-logger">
-            <div class="card-body ">
-                @* <div style="white-space: pre-wrap"> @Model.LoggerFileData </div> *@
-                <p>
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="./AGLogger?file=@Model.SelectedFileName">
                     <i>Logger File Name : @Model.SelectedFileName </i>
-                </p>
-                <component type="typeof(LoggerStats)" render-mode="Static" param-statsModel="@Model.LoggerStats"/>
-                <hr>
-                <div class="border border-dark p-2 w-100 h-100 ">
-                    @foreach (var loggerItem in Model.JsonLoggerModels)
-                    {
-                        <component type="typeof(LoggerDataComponent)" render-mode="Static" param-jsonLoggerModel='@loggerItem'/>
-                    }
-                </div>
-                <hr>
+                </a>
             </div>
-        </div>
 
+
+            <div class="d-flex">
+                <a href="./AGLogger?file=@Model.SelectedFileName&filter=@AgLoggerConst.Error"
+                   type="button" class="btn btn-outline-danger me-2">
+                    Errors <span class="badge badge-light fs-6">@Model.LoggerStats.ErrorCount</span>
+                </a>
+
+                <a href="./AGLogger?file=@Model.SelectedFileName&filter=@AgLoggerConst.Warning"
+                   type="button" class="btn btn-outline-warning me-2">
+                    Warnings <span class="badge badge-light fs-6">@Model.LoggerStats.WarningCount</span>
+                </a>
+
+                <a href="./AGLogger?file=@Model.SelectedFileName&filter=@AgLoggerConst.Information"
+                   type="button" class="btn btn-outline-info me-2">
+                    Informations <span class="badge badge-light fs-6">@Model.LoggerStats.InformationCount</span>
+                </a>
+            </div>
+
+            <div class="card shadow-0 scroller-view-logger mt-3" style="height: 60vh">
+                <div class="card-body">
+                    @* -- LOGGER DETAILS -- *@
+                    <div class="border border-dark p-2 w-100 h-100 ">
+                        @foreach (var loggerItem in Model.JsonLoggerModels)
+                        {
+                            <component type="typeof(LoggerDataComponent)" render-mode="Static" param-jsonLoggerModel='@loggerItem'/>
+                        }
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
+<script>
+/* Set the width of the side navigation to 250px */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "350px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
 
 
 @* <h1>@Model.Message</h1> *@

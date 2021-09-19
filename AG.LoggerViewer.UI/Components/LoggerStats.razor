@@ -1,25 +1,28 @@
-﻿@using AG.LoggerViewer.UI.Application.Common.Models
+﻿@using AG.LoggerViewer.UI.Application.Common
+@using AG.LoggerViewer.UI.Application.Common.Models
 <div class="row">
     <div class="col-sm-4">
         <div class="card shadow-0 border">
             <div class="card-body p-0 text-center">
 
-                <div class="row align-items-center" style="height: 80px">
+                <a href="./AGLogger?file=@SelectedFile&filter=@AgLoggerConst.Error">
+                    <div class="row align-items-center" style="height: 80px">
 
-                    <div class="col-5 text-center">
-                        <div class="text-danger">
-                            <i class="fs-4 p-3 stats-icon  fas fa-exclamation-triangle" style="background-color: #FFEBEE;"></i>
+                        <div class="col-5 text-center">
+                            <div class="text-danger">
+                                <i class="fs-4 p-3 stats-icon  fas fa-exclamation-triangle" style="background-color: #FFEBEE;"></i>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col">
-                        <div class="fs-3">
-                            <b> @StatsModel.ErrorCount </b>
+                        <div class="col">
+                            <div class="fs-3 text-black">
+                                <b> @StatsModel.ErrorCount </b>
+                            </div>
+                            <b class="text-danger">Errors</b>
                         </div>
-                        <b class="text-danger">Errors</b>
-                    </div>
 
-                </div>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -77,6 +80,9 @@
 
     [Parameter]
     public LoggerStatsModel StatsModel { get; set; } = new LoggerStatsModel();
+
+    [Parameter]
+    public string SelectedFile { get; set; }
 
 
 }

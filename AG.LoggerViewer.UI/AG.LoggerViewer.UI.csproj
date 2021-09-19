@@ -23,6 +23,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.15" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 

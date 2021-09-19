@@ -26,6 +26,7 @@ namespace AG.LoggerViewer
         {
             services.AddRazorPages()
                  .AddRazorRuntimeCompilation();
+            
             services.AddAGLogger(Configuration);
         }
 

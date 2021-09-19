@@ -1,8 +1,10 @@
-using System.Collections.Generic;
+using AG.LoggerViewer.UI.Application.Common;
 using AG.LoggerViewer.UI.Application.Common.Dto;
 using AG.LoggerViewer.UI.Application.Common.Models;
 using AG.LoggerViewer.UI.Application.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
 {
@@ -34,17 +36,28 @@ namespace AG.LoggerViewer.UI.Areas.AGLogger.Pages
 
         // public string loggerFileData
 
-        public void OnGet(string file)
+        public void OnGet(string file, string filter)
         {
             if (string.IsNullOrWhiteSpace(file)) file = _loggerReadService.GetTodayFileName();
 
-            JsonLoggerModels = _loggerReadService.ReadLoggerFileFromFileName(file);
+            var loggerRes = _loggerReadService.ReadLoggerFileFromFileName(file);
+
+            JsonLoggerModels = filter switch
+            {
+                AgLoggerConst.Error => loggerRes.Where(x => x.Level == AgLoggerConst.Error).ToList(),
+                AgLoggerConst.Warning => loggerRes.Where(x => x.Level == AgLoggerConst.Warning).ToList(),
+                AgLoggerConst.Information => loggerRes.Where(x => x.Level == AgLoggerConst.Information).ToList(),
+                _ => loggerRes
+            };
+
             SelectedFileName = file;
 
-            LoggerStats = _loggerReadService.GetDailyLoggerStats(JsonLoggerModels);
+            LoggerStats = _loggerReadService.GetDailyLoggerStats(loggerRes);
             FileCountFromLoggerPath = _loggerReadService.GetFilesFromLoggerPath().Length;
 
-            KeyValueDtos = _loggerReadService.GetTopMostFileNamesAndPath(-1);
+            KeyValueDtos = _loggerReadService.GetTopMostFileNamesAndPath(20);
         }
+
+
     }
 }
