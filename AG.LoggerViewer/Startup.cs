@@ -27,7 +27,7 @@ namespace AG.LoggerViewer
             services.AddRazorPages()
                  .AddRazorRuntimeCompilation();
             
-            services.AddAGLogger(Configuration);
+            services.AddAgLogger(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +51,7 @@ namespace AG.LoggerViewer
 
             app.UseAuthorization();
 
-            app.UserAGLogger();
+            app.UseAgLogger();
 
             app.UseEndpoints(endpoints =>
             {

@@ -3,33 +3,39 @@
     used from a library project/package.
 */
 
-.my-component {
-    border: 2px dashed red;
-    padding: 1em;
-    margin: 1em 0;
-    background-image: url('background.png');
-}
-.text-color {
-    color:red;
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
 }
 
-.scroller-view{
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #d7d6d6;
+}
+
+
+.text-color {
+    color: red;
+}
+
+.scroller-view {
     height: 70vh;
     overflow-y: auto;
 }
 
-.scroller-view-logger{
+.scroller-view-logger {
     height: 50vh;
     overflow-y: auto;
 }
-.stats-icon{
+
+.stats-icon {
     border-radius: 10%;
     background-color: #ffffff;
 }
 
-.bg-primary{
-    background-color: #F5F5F5 !important;
-}
+/*.bg-primary{*/
+/*    background-color: #F5F5F5 !important;*/
+/*}*/
 
 /*     // side nav     */
 
@@ -56,6 +62,20 @@
     margin-left: 50px;
 }
 
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: fit-content;
+    max-height: calc(100vh - 80px);
+}
+
+.tbl-fixed {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: fit-content;
+    max-height: calc(100vh - 220px);
+}
+
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
     transition: margin-left .5s;
@@ -64,6 +84,11 @@
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
 }

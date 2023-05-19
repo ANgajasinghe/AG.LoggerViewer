@@ -16,8 +16,10 @@ namespace AG.LoggerViewer.UI.Application.Services
     public interface ILoggerReadService
     {
         public string[] GetFilesFromLoggerPath();
+        public string GetFileNameFromDate(DateTime? date);
 
-        public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10);
+        public List<KeyValueDto> GetTopMostFileNamesAndPath(int? limit = 10);
+        public List<KeyValueDto> GetFileNamesAndPathFromDateFilter(DateTime? startDate, DateTime? endDate);
 
 
         public string GetJsonStringFromLoggerObject(object fileData);
@@ -48,10 +50,16 @@ namespace AG.LoggerViewer.UI.Application.Services
             }
             catch (Exception ex)
             {
-                throw new AGLoggerExceptions("Cannot get files from given logger path please check your logger path",
+                throw new AgLoggerExceptions("Cannot get files from given logger path please check your logger path",
                     ex);
             }
         }
+
+        public string GetFileNameFromDate(DateTime? date)
+        {
+            return $"{_loggerUtility.LoggerFileNameWithOutDate}{date?.ToString("yyyyMMdd") ?? DateTime.Now.ToString("yyyyMMdd")}{_loggerUtility.FileExtension}";
+        }
+
 
         public string GetJsonStringFromLoggerObject(object fileData)
         {
@@ -71,21 +79,22 @@ namespace AG.LoggerViewer.UI.Application.Services
             };
         }
 
-        public List<KeyValueDto> GetTopMostFileNamesAndPath(int limit = 10)
+        public List<KeyValueDto> GetTopMostFileNamesAndPath(int? limit = 10)
         {
             try
             {
                 var keyValueDtos = new List<KeyValueDto>();
 
                 List<string> records;
-                if (limit == -1)
+                if (limit is null)
                     records = GetFilesFromLoggerPath().ToList();
                 else
-                    records = GetFilesFromLoggerPath().Take(limit)
-                        .OrderBy(x=>x)
+                    records = GetFilesFromLoggerPath()
+                        .OrderByDescending(x=>x)
+                        .Take(limit.GetValueOrDefault(1))
                         .ToList();
 
-                for (var i = records.Count - 1; i >= 0; i--)
+                for (var i = 0; i < records.Count ; i++)
                 {
                     var path = records[i];
 
@@ -98,9 +107,35 @@ namespace AG.LoggerViewer.UI.Application.Services
             }
             catch (Exception ex)
             {
-                throw new AGLoggerExceptions("Cannot get top files, please check your logger path", ex);
+                throw new AgLoggerExceptions("Cannot get top files, please check your logger path", ex);
             }
         }
+        
+        public List<KeyValueDto> GetFileNamesAndPathFromDateFilter(DateTime? startDate, DateTime? endDate)
+        {
+            try
+            {
+                var keyValueDtos = new List<KeyValueDto>();
+                
+                var records = GetDateRangeFileNames(startDate, endDate).OrderByDescending(x=>x).ToList();
+
+                for (var i = 0; i < records.Count ; i++)
+                {
+                    var path = records[i];
+
+                    var fileName = Path.GetFileName(path);
+
+                    keyValueDtos.Add(new KeyValueDto {Key = fileName, Value = path});
+                }
+
+                return keyValueDtos;
+            }
+            catch (Exception ex)
+            {
+                throw new AgLoggerExceptions("Cannot get files with selected date range", ex);
+            }
+        }
+
 
         public List<JsonLoggerModel> ReadLoggerFileFromFileName(string fileName)
         {
@@ -115,6 +150,32 @@ namespace AG.LoggerViewer.UI.Application.Services
                 $"{_loggerUtility.LoggerFileNameWithOutDate}{_dateTimeService.GetDateTime}{_loggerUtility.FileExtension}";
         }
 
+        private List<string> GetDateRangeFileNames(DateTime? startDate, DateTime? endDate)
+        {
+            var dateRangeFileNames = new List<string>();
+
+            var startDateString = _dateTimeService.FormatDate(startDate ?? DateTime.Now);
+            var endDateString = _dateTimeService.FormatDate(endDate ?? DateTime.Now);
+
+            var startDateInt = int.Parse(startDateString);
+            var endDateInt = int.Parse(endDateString);
+
+            var files = GetFilesFromLoggerPath();
+
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file);
+
+                var date = Regex.Match(fileName, @"\d+").Value;
+
+                var dateInt = int.Parse(date);
+
+                if (dateInt >= startDateInt && dateInt <= endDateInt)
+                    dateRangeFileNames.Add(file);
+            }
+
+            return dateRangeFileNames;
+        }
 
         private static List<JsonLoggerModel> ReadLogFile(string filePath)
         {
@@ -123,7 +184,7 @@ namespace AG.LoggerViewer.UI.Application.Services
                 var list = new List<JsonLoggerModel>();
 
                 if (!File.Exists(filePath))
-                    throw new AGLoggerExceptions(
+                    throw new AgLoggerExceptions(
                         $"{Path.GetFileName(filePath)} this file could'n find from {filePath}");
 
                 Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -138,9 +199,6 @@ namespace AG.LoggerViewer.UI.Application.Services
                         list.Add(replacedData.FromJson<JsonLoggerModel>());
                     }
                     
-
-                   
-
                     file.Close();
                 }
 
@@ -150,7 +208,7 @@ namespace AG.LoggerViewer.UI.Application.Services
             }
             catch (Exception ex)
             {
-                throw new AGLoggerExceptions("Cannot get read log file", ex);
+                throw new AgLoggerExceptions("Cannot get read log file", ex);
             }
         }
     }

@@ -9,14 +9,14 @@ namespace AG.LoggerViewer.UI
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAGLogger(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAgLogger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddRazorPages();
 
-            var loggerUtility = configuration.GetSection("AGLoggerViewer").Get<LoggerUtility>();
+            var loggerUtility = configuration.GetSection("AgLoggerViewer").Get<LoggerUtility>();
 
             if (loggerUtility == null)
-                throw new AGLoggerExceptions("Cannot read logger utility, Please add {LoggerUtitlity} section");
+                throw new AgLoggerExceptions("Cannot read logger utility, Please add {LoggerUtility} section");
 
             services.AddSingleton(loggerUtility);
             services.AddSingleton<DateTimeService>();
@@ -24,7 +24,7 @@ namespace AG.LoggerViewer.UI
             return services;
         }
 
-        public static IApplicationBuilder UserAGLogger(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAgLogger(this IApplicationBuilder app)
         {
             app.UseStaticFiles();
             app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });

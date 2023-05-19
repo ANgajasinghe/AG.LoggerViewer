@@ -10,5 +10,11 @@ namespace AG.LoggerViewer.UI.Application.Services
         {
             return dateTime.ToString("yyyyMMdd");
         }
+
+        public DateTime GetDateTimeFromString(string startDate)
+        {
+            return DateTime.ParseExact(startDate, "yyyyMMdd", null);
+           
+        }
     }
 }

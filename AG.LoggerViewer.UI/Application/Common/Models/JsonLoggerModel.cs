@@ -10,5 +10,16 @@ namespace AG.LoggerViewer.UI.Application.Common.Models
         public string Exception { get; set; }
         public object Properties { get; set; }
         public object Renderings { get; set; }
+        
+        public  string GetBatchClasses()
+        {
+            return Level switch
+            {
+                AgLoggerConst.Error => "badge badge-danger",
+                AgLoggerConst.Warning => "badge badge-warning",
+                AgLoggerConst.Information => "badge badge-info",
+                _ => ""
+            };
+        }
     }
 }
